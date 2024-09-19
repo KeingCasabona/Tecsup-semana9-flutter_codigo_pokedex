@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_codigo_pokedex/ui/widgets/item_type_widget.dart';
 
 class ItemPokemonWidget extends StatelessWidget {
   final String name;
   final String image;
-
+  final List<String> type;
   ItemPokemonWidget({
     required this.name,
     required this.image,
+    required this.type,
   });
 
   @override
@@ -41,9 +43,8 @@ class ItemPokemonWidget extends StatelessWidget {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.only(left: 8),
+            padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 12),
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
@@ -52,53 +53,11 @@ class ItemPokemonWidget extends StatelessWidget {
                       color: Colors.white, fontWeight: FontWeight.bold),
                 ),
                 SizedBox(height: 6),
-                Container(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: 8,
-                    vertical: 2,
-                  ),
-                  child: Text(
-                    'Grass',
-                    style: TextStyle(
-                      color: Colors.white,
-                    ),
-                  ),
-                  decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(0.25),
-                    borderRadius: BorderRadius.circular(10),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withOpacity(0.06),
-                        offset: Offset(4, 4),
-                        blurRadius: 12,
-                      ),
-                    ],
-                  ),
-                ),
-                SizedBox(height: 6),
-                Container(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: 8,
-                    vertical: 2,
-                  ),
-                  child: Text(
-                    'Poison',
-                    style: TextStyle(
-                      color: Colors.white,
-                    ),
-                  ),
-                  decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(0.25),
-                    borderRadius: BorderRadius.circular(10),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withOpacity(0.06),
-                        offset: Offset(4, 4),
-                        blurRadius: 12,
-                      ),
-                    ],
-                  ),
-                ),
+                //ES LO MISMO QUE LO DE ABAJO:
+                ...type.map((e) => ItemTypeWidget(text: e)).toList(),
+                // Column(
+                //   children: type.map((e) => ItemTypeWidget()).toList(),
+                // ),
               ],
             ),
           ),

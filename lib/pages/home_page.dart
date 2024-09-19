@@ -60,6 +60,8 @@ class _HomePageState extends State<HomePage> {
                           (e) => ItemPokemonWidget(
                             name: e['name'],
                             image: e['img'],
+                            type: List<String>.from(
+                                e['type'].map((item) => item)),
                           ),
                         )
                         .toList())
