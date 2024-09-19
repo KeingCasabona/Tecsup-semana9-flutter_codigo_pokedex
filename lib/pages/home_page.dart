@@ -1,11 +1,23 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:flutter_codigo_pokedex/ui/widgets/item_pokemon_widget.dart';
 import 'package:http/http.dart' as http;
 
-class HomePage extends StatelessWidget {
-  HomePage({super.key});
+class HomePage extends StatefulWidget {
+  const HomePage({super.key});
 
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
   List pokemons = [];
+
+  @override
+  void initState() {
+    super.initState();
+    getDataPokemon();
+  }
 
   getDataPokemon() async {
     Uri _uri = Uri.parse(
@@ -14,6 +26,7 @@ class HomePage extends StatelessWidget {
     if (response.statusCode == 200) {
       Map<String, dynamic> myMap = json.decode(response.body);
       pokemons = myMap['pokemon'];
+      setState(() {});
     }
   }
 
@@ -36,102 +49,20 @@ class HomePage extends StatelessWidget {
                 ),
                 SizedBox(height: 30),
                 GridView.count(
-                  shrinkWrap: true,
-                  crossAxisCount: 2,
-                  mainAxisSpacing: 12,
-                  crossAxisSpacing: 12,
-                  childAspectRatio: 1.30,
-                  children: [
-                    Container(
-                      decoration: BoxDecoration(
-                        color: Colors.red,
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      child: Stack(
-                        children: [
-                          Positioned(
-                            bottom: -25,
-                            right: -18,
-                            child: Image.asset(
-                              'assets/images/pokeball.png',
-                              height: 120,
-                              color: Colors.white.withOpacity(0.2),
-                            ),
+                    physics: ScrollPhysics(),
+                    shrinkWrap: true,
+                    crossAxisCount: 2,
+                    mainAxisSpacing: 12,
+                    crossAxisSpacing: 12,
+                    childAspectRatio: 1.30,
+                    children: pokemons
+                        .map(
+                          (e) => ItemPokemonWidget(
+                            name: e['name'],
+                            image: e['img'],
                           ),
-                          Positioned(
-                            bottom: -10,
-                            right: -10,
-                            child: Image.network(
-                                'http://www.serebii.net/pokemongo/pokemon/001.png'),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(left: 8),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  'Bulbasaur',
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                                SizedBox(height: 6),
-                                Container(
-                                  padding: EdgeInsets.symmetric(
-                                    horizontal: 8,
-                                    vertical: 2,
-                                  ),
-                                  child: Text(
-                                    'Grass',
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                    ),
-                                  ),
-                                  decoration: BoxDecoration(
-                                    color: Colors.white.withOpacity(0.25),
-                                    borderRadius: BorderRadius.circular(10),
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Colors.black.withOpacity(0.06),
-                                        offset: Offset(4, 4),
-                                        blurRadius: 12,
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                SizedBox(height: 6),
-                                Container(
-                                  padding: EdgeInsets.symmetric(
-                                    horizontal: 8,
-                                    vertical: 2,
-                                  ),
-                                  child: Text(
-                                    'Poison',
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                    ),
-                                  ),
-                                  decoration: BoxDecoration(
-                                    color: Colors.white.withOpacity(0.25),
-                                    borderRadius: BorderRadius.circular(10),
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Colors.black.withOpacity(0.06),
-                                        offset: Offset(4, 4),
-                                        blurRadius: 12,
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                )
+                        )
+                        .toList())
               ],
             ),
           ),
