@@ -1,18 +1,25 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_codigo_pokedex/model/pokemon_model.dart';
+import 'package:flutter_codigo_pokedex/ui/general/colors.dart';
 import 'package:flutter_codigo_pokedex/ui/widgets/item_data_widget.dart';
 import 'package:flutter_codigo_pokedex/ui/widgets/item_type_widget.dart';
 
 class DetailPage extends StatelessWidget {
-  DetailPage({super.key});
+  final PokemonModel pokemonModel;
+
+  const DetailPage({
+    super.key,
+    required this.pokemonModel,
+  });
 
   @override
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
     return Scaffold(
-      backgroundColor: Color(0xff49d0b0),
+      backgroundColor: colorsPokemon[pokemonModel.type.first],
       appBar: AppBar(
         elevation: 0,
-        backgroundColor: Color(0xff49d0b0),
+        backgroundColor: Colors.transparent,
         iconTheme: IconThemeData(color: Colors.white),
         actions: [
           IconButton(
@@ -54,15 +61,14 @@ class DetailPage extends StatelessWidget {
                     ),
                     SizedBox(height: 10),
                     Row(
-                      children: [
-                        ItemTypeWidget(text: 'Grass'),
-                        ItemTypeWidget(text: 'Grass'),
-                      ],
+                      children: pokemonModel.type
+                          .map((e) => ItemTypeWidget(text: e))
+                          .toList(),
                     )
                   ],
                 ),
                 Text(
-                  '#001',
+                  '#${pokemonModel.numPokemon}',
                   style: TextStyle(
                       color: Colors.white,
                       fontSize: 18,
@@ -93,11 +99,17 @@ class DetailPage extends StatelessWidget {
                     children: [
                       //IMAGEN DEL POKEMON:
                       Positioned.fill(
-                        top: -90,
+                        top: -170,
                         child: Align(
                           alignment: Alignment.topCenter,
-                          child: Image.network(
-                              'http://www.serebii.net/pokemongo/pokemon/001.png'),
+                          child: SizedBox(
+                            width: 200,
+                            height: 200,
+                            child: Image.network(
+                              pokemonModel.img,
+                              fit: BoxFit.contain,
+                            ),
+                          ),
                         ),
                       ),
                       //DATA DEL POKEMON:
@@ -106,25 +118,25 @@ class DetailPage extends StatelessWidget {
                         child: Column(
                           children: [
                             Text(
-                              'About',
+                              pokemonModel.name,
                               style: TextStyle(
                                   fontSize: 20, fontWeight: FontWeight.bold),
                             ),
                             ItemDataWidget(
                               title: 'Height',
-                              data: '1.5 m',
+                              data: pokemonModel.height,
                             ),
                             ItemDataWidget(
-                              title: 'Height',
-                              data: '1.5 m',
+                              title: 'Weight',
+                              data: pokemonModel.weight,
                             ),
                             ItemDataWidget(
-                              title: 'Height',
-                              data: '1.5 m',
+                              title: 'Candy',
+                              data: pokemonModel.candy,
                             ),
                             ItemDataWidget(
-                              title: 'Height',
-                              data: '1.5 m',
+                              title: 'Candy Count',
+                              data: pokemonModel.candyCount.toString(),
                             ),
                           ],
                         ),
